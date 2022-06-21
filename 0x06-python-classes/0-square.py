@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-"""an empty class"""
+"""
+an empty class
+"""
 class Square:
     """
     Represents an empty square.
