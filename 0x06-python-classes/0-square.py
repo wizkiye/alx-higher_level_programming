@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
 """
-an empty class
+Represents an empty square.
 """
+
+
 class Square:
     """
     Represents an empty square.
