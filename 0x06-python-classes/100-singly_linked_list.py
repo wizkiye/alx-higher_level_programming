@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+"""Represent a node in a singly-linked list."""
+
+
 class Node:
     """Represent a node in a singly-linked list."""
 
