@@ -1,51 +1,35 @@
 #!/usr/bin/node
+/**
+ * Script that prints all characters of a Star Wars movie
+ */
 
 const request = require('request');
+const process = require('process');
+const filmId = process.argv[2];
+const url = `https://swapi-api.hbtn.io/api/films/${filmId}`;
 
-/*
-let characters = [];
-let dict = {};
-
-function addToDict (url, name) {
-  dict[url] = name;
-}
-
-request('http://swapi.co/api/films/' + process.argv[2], function (error, response, body) {
-  if (error) {
-    console.error(error);
-  }
-  characters = JSON.parse(body).characters
-  characters.forEach(function (url) {
-    request(url, function (error, response, body) {
-      if (error) {
-        console.error(error);
-      }
-      addToDict(url, JSON.parse(body).name);
+function characterRequest(characterUrl) {
+    return new Promise((resolve, reject) => {
+        request.get(characterUrl, (err, _resp, body) => {
+            if (err !== null) {
+                reject(err);
+            }
+            resolve(body);
+        });
     });
-  });
-  characters.forEach(function (item) {
-    console.log(dict[item]);
-  })
-});
-*/
-
-function helpRequest (arr, i) {
-  if (i === arr.length) {
-    return;
-  }
-  request(arr[i], function (error, response, body) {
-    if (error) {
-      console.error(error);
-    }
-    console.log(JSON.parse(body).name);
-    helpRequest(arr, i + 1);
-  });
 }
 
-request('http://swapi.co/api/films/' + process.argv[2], function (error, response, body) {
-  if (error) {
-    console.error(error);
-  }
-  const charac = JSON.parse(body).characters;
-  helpRequest(charac, 0);
+request.get(url, (err, _resp, body) => {
+    if (err === null) {
+        const film = JSON.parse(body);
+        const characters = film.characters;
+        characters.forEach((character) => {
+            characterRequest(character).then((body) => {
+                const characterInfo = JSON.parse(body);
+                console.log(characterInfo.name);
+            }).catch(err => console.log(err));
+        });
+    } else {
+        console.log(err);
+    }
 });
